@@ -8,7 +8,8 @@ import {
   Typography,
   Link,
   Paper,
-  CssBaseline
+  CssBaseline,
+  Avatar
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -63,7 +64,7 @@ const Login = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #3B82F6 0%, #EC4899 100%)',
           p: 0,
           m: 0,
         }}
@@ -93,8 +94,23 @@ const Login = () => {
               alignItems: 'center',
               justifyContent: 'center',
               boxSizing: 'border-box',
+              backgroundColor: 'rgba(255, 255, 255, 0.9)'
             }}
           >
+            {/* Logo added here */}
+            <Avatar
+              src="/logo.png" // Replace with your actual logo path
+              alt="UCUA Logo"
+              sx={{
+                width: 80,
+                height: 80,
+                mb: 2,
+                bgcolor: 'primary.main'
+              }}
+            >
+              UCUA
+            </Avatar>
+
             <Typography
               variant="h4"
               component="h1"
