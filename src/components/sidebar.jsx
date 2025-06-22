@@ -305,7 +305,7 @@ const Sidebar = () => {
               </Collapse>
 
               <NavButton
-                to="/analytics"
+                to="/safety-pattern-analysis"
                 icon={InsightsIcon}
                 title="UCUA Analytics"
               />
@@ -326,7 +326,7 @@ const Sidebar = () => {
                 unmountOnExit
               >
                 <Box sx={{ pb: 1 }}>
-                  <StyledLink to="/all-reports" label="All Report List" />
+                  <StyledLink to="/ucua-admin-reports" label="All Report List" />
                 </Box>
               </Collapse>
 

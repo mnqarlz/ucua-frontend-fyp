@@ -23,6 +23,12 @@ import PssdEditUA from '../pages/Review&FeedbackModule/pssdEditUA';
 import PssdLogUC from '../pages/Review&FeedbackModule/pssdLogUC';
 import PssdLogUA from '../pages/Review&FeedbackModule/pssdLogUA';
 
+// PSSD Officer – Safety Pattern Analysis
+import UCUATrends from '../pages/SafetyInsigh&ReportingModule/analyzetrends/ucuaTrends';
+
+// UCUA Admin – View-Only Report List
+import UCUAAdminReportList from '../pages/UCUAReportingModule/adminViewAll';
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -50,6 +56,12 @@ export default function AppRoutes() {
       <Route path="/pssd-edit-ua/:id" element={<PssdEditUA />} />
       <Route path="/pssd-log-uc/:id" element={<PssdLogUC />} />
       <Route path="/pssd-log-ua/:id" element={<PssdLogUA />} />
+
+      {/* PSSD Officer – Safety Pattern Analysis */}
+      <Route path="/safety-pattern-analysis" element={<UCUATrends />} />
+
+      {/* UCUA Admin – View-Only */}
+      <Route path="/ucua-admin-reports" element={<UCUAAdminReportList />} />
     </Routes>
   );
 }

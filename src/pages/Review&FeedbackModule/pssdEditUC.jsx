@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Upload, FileEdit, CheckCircle2, XCircle, Shield, Eye, Clock, User, Calendar, MapPin, FileText, Camera, Tag, TrendingUp } from "lucide-react";
+import { Upload, FileEdit, CheckCircle2, XCircle, Shield, Eye, Clock, User, Calendar, MapPin, FileText, Camera, Tag, TrendingUp, MessageSquare } from "lucide-react";
 
 const PSSDEditUC = () => {
   const [remark, setRemark] = useState("");
@@ -7,6 +7,17 @@ const PSSDEditUC = () => {
   const [actionFile, setActionFile] = useState(null);
   const [showApproveConfirm, setShowApproveConfirm] = useState(false);
   const [showRejectConfirm, setShowRejectConfirm] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
+  
+  // Button hover states
+  const [saveHovered, setSaveHovered] = useState(false);
+  const [approveHovered, setApproveHovered] = useState(false);
+  const [rejectHovered, setRejectHovered] = useState(false);
+  const [feedbackHovered, setFeedbackHovered] = useState(false);
+  const [sendHovered, setSendHovered] = useState(false);
+  const [cancelHovered, setCancelHovered] = useState(false);
 
   const styles = {
     container: {
@@ -249,6 +260,105 @@ const PSSDEditUC = () => {
       fontFamily: 'Poppins, sans-serif',
       transition: 'all 0.2s'
     },
+    feedbackModal: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000
+    },
+    feedbackModalContent: {
+      backgroundColor: 'white',
+      padding: '32px',
+      borderRadius: '12px',
+      maxWidth: '500px',
+      width: '90%',
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+    },
+    feedbackTitle: {
+      fontSize: '20px',
+      fontWeight: 'bold',
+      color: '#061978',
+      marginBottom: '8px',
+      textAlign: 'center'
+    },
+    feedbackSubtitle: {
+      fontSize: '14px',
+      color: '#6b7280',
+      marginBottom: '24px',
+      textAlign: 'center'
+    },
+    feedbackTextarea: {
+      width: '100%',
+      padding: '12px 16px',
+      border: '1px solid #d1d5db',
+      borderRadius: '8px',
+      backgroundColor: 'white',
+      color: '#374151',
+      fontSize: '14px',
+      fontFamily: 'Poppins, sans-serif',
+      resize: 'vertical',
+      minHeight: '120px',
+      boxSizing: 'border-box',
+      marginBottom: '16px'
+    },
+    feedbackTextareaError: {
+      borderColor: '#dc2626'
+    },
+    errorMessage: {
+      color: '#dc2626',
+      fontSize: '13px',
+      marginBottom: '16px'
+    },
+    feedbackButtons: {
+      display: 'flex',
+      gap: '12px',
+      justifyContent: 'center'
+    },
+    sendBtn: {
+      padding: '10px 20px',
+      borderRadius: '8px',
+      border: 'none',
+      backgroundColor: '#f59e0b',
+      color: 'white',
+      fontWeight: '600',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontFamily: 'Poppins, sans-serif',
+      transition: 'all 0.3s ease',
+      transform: 'translateY(0)',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+    },
+    sendBtnHover: {
+      backgroundColor: '#d97706',
+      transform: 'translateY(-1px)',
+      boxShadow: '0 4px 8px rgba(245, 158, 11, 0.3)'
+    },
+    cancelBtn: {
+      padding: '10px 20px',
+      borderRadius: '8px',
+      border: '1px solid #d1d5db',
+      backgroundColor: 'white',
+      color: '#6b7280',
+      fontWeight: '600',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontFamily: 'Poppins, sans-serif',
+      transition: 'all 0.3s ease',
+      transform: 'translateY(0)',
+      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+    },
+    cancelBtnHover: {
+      backgroundColor: '#f9fafb',
+      borderColor: '#9ca3af',
+      transform: 'translateY(-1px)',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+    },
     noteBox: {
       backgroundColor: '#fee2e2',
       color: '#b91c1c',
@@ -377,6 +487,38 @@ const PSSDEditUC = () => {
   const handleReject = () => {
     setShowRejectConfirm(false);
     console.log('UC Report rejected');
+  };
+
+  const handleRequestFeedback = () => {
+    setShowFeedbackModal(true);
+    setFeedbackMessage("");
+    setFeedbackError("");
+  };
+
+  const handleSendFeedback = () => {
+    if (!feedbackMessage.trim()) {
+      setFeedbackError("Please enter your feedback!");
+      return;
+    }
+    
+    // Send feedback request
+    console.log('Feedback request sent:', feedbackMessage);
+    setShowFeedbackModal(false);
+    setFeedbackMessage("");
+    setFeedbackError("");
+    
+    // Here you would typically:
+    // 1. Update report status to "Need Feedback"
+    // 2. Notify the original reporter
+    // 3. Log the action
+    // 4. Redirect to UC report list
+    alert('Feedback request sent successfully! The reporter will be notified.');
+  };
+
+  const handleCancelFeedback = () => {
+    setShowFeedbackModal(false);
+    setFeedbackMessage("");
+    setFeedbackError("");
   };
 
   return (
@@ -714,22 +856,62 @@ const PSSDEditUC = () => {
 
       {/* Action Buttons */}
       <div style={styles.actionButtons}>
-        <button style={styles.saveBtn} onClick={handleSave}>
+        <button 
+          style={{
+            ...styles.saveBtn,
+            ...(saveHovered ? styles.saveBtnHover : {})
+          }}
+          onClick={handleSave}
+          onMouseEnter={() => setSaveHovered(true)}
+          onMouseLeave={() => setSaveHovered(false)}
+          onMouseDown={(e) => e.target.style.transform = 'translateY(0)'}
+          onMouseUp={(e) => e.target.style.transform = saveHovered ? 'translateY(-2px)' : 'translateY(0)'}
+        >
           <FileEdit size={20} />
           Save Changes
         </button>
         <button 
-          style={styles.approveBtn} 
+          style={{
+            ...styles.requestFeedbackBtn,
+            ...(feedbackHovered ? styles.requestFeedbackBtnHover : {})
+          }}
+          onClick={handleRequestFeedback}
+          onMouseEnter={() => setFeedbackHovered(true)}
+          onMouseLeave={() => setFeedbackHovered(false)}
+          onMouseDown={(e) => e.target.style.transform = 'translateY(0)'}
+          onMouseUp={(e) => e.target.style.transform = feedbackHovered ? 'translateY(-2px)' : 'translateY(0)'}
+        >
+          <MessageSquare size={20} />
+          Request Feedback
+        </button>
+        <button 
+          style={{
+            ...styles.approveBtn,
+            ...(approveHovered && remark.trim() ? styles.approveBtnHover : {}),
+            ...(!remark.trim() ? styles.approveBtnDisabled : {})
+          }}
           onClick={() => setShowApproveConfirm(true)}
           disabled={!remark.trim()}
+          onMouseEnter={() => setApproveHovered(true)}
+          onMouseLeave={() => setApproveHovered(false)}
+          onMouseDown={(e) => remark.trim() && (e.target.style.transform = 'translateY(0)')}
+          onMouseUp={(e) => remark.trim() && (e.target.style.transform = approveHovered ? 'translateY(-2px)' : 'translateY(0)')}
         >
           <CheckCircle2 size={20} />
           Approve Report
         </button>
         <button 
-          style={styles.rejectBtn} 
+          style={{
+            ...styles.rejectBtn,
+            ...(rejectHovered && remark.trim() ? styles.rejectBtnHover : {}),
+            ...(!remark.trim() ? styles.rejectBtnDisabled : {})
+          }}
           onClick={() => setShowRejectConfirm(true)}
           disabled={!remark.trim()}
+          onMouseEnter={() => setRejectHovered(true)}
+          onMouseLeave={() => setRejectHovered(false)}
+          onMouseDown={(e) => remark.trim() && (e.target.style.transform = 'translateY(0)')}
+          onMouseUp={(e) => remark.trim() && (e.target.style.transform = rejectHovered ? 'translateY(-2px)' : 'translateY(0)')}
         >
           <XCircle size={20} />
           Reject Report
@@ -800,6 +982,75 @@ const PSSDEditUC = () => {
               <button 
                 style={styles.modalBtnSecondary}
                 onClick={() => setShowRejectConfirm(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Feedback Request Modal */}
+      {showFeedbackModal && (
+        <div style={styles.feedbackModal}>
+          <div style={styles.feedbackModalContent}>
+            <MessageSquare size={48} color="#f59e0b" style={{ margin: '0 auto 16px', display: 'block' }} />
+            <h3 style={styles.feedbackTitle}>Request Feedback from Reporter</h3>
+            <p style={styles.feedbackSubtitle}>
+              Send a clarification request to the original reporter for missing or unclear information.
+            </p>
+            
+            <div>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '14px', 
+                fontWeight: '600', 
+                color: '#061978', 
+                marginBottom: '8px' 
+              }}>
+                Clarification Message <span style={{ color: '#dc2626' }}>*</span>
+              </label>
+              <textarea
+                value={feedbackMessage}
+                onChange={(e) => {
+                  setFeedbackMessage(e.target.value);
+                  if (feedbackError) setFeedbackError("");
+                }}
+                placeholder="Please provide specific details about what information is missing or needs clarification..."
+                style={{
+                  ...styles.feedbackTextarea,
+                  ...(feedbackError ? styles.feedbackTextareaError : {})
+                }}
+              />
+              {feedbackError && (
+                <p style={styles.errorMessage}>{feedbackError}</p>
+              )}
+            </div>
+
+            <div style={styles.feedbackButtons}>
+              <button 
+                style={{
+                  ...styles.sendBtn,
+                  ...(sendHovered ? styles.sendBtnHover : {})
+                }}
+                onClick={handleSendFeedback}
+                onMouseEnter={() => setSendHovered(true)}
+                onMouseLeave={() => setSendHovered(false)}
+                onMouseDown={(e) => e.target.style.transform = 'translateY(0)'}
+                onMouseUp={(e) => e.target.style.transform = sendHovered ? 'translateY(-1px)' : 'translateY(0)'}
+              >
+                Send Request
+              </button>
+              <button 
+                style={{
+                  ...styles.cancelBtn,
+                  ...(cancelHovered ? styles.cancelBtnHover : {})
+                }}
+                onClick={handleCancelFeedback}
+                onMouseEnter={() => setCancelHovered(true)}
+                onMouseLeave={() => setCancelHovered(false)}
+                onMouseDown={(e) => e.target.style.transform = 'translateY(0)'}
+                onMouseUp={(e) => e.target.style.transform = cancelHovered ? 'translateY(-1px)' : 'translateY(0)'}
               >
                 Cancel
               </button>
