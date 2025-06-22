@@ -17,6 +17,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import InsightsIcon from "@mui/icons-material/Insights";
 import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -318,6 +319,11 @@ const Sidebar = () => {
                 to="/user-management"
                 icon={GroupIcon}
                 title="Manage Users"
+              />
+              <NavButton
+                to="/user-permission"
+                icon={LockPersonIcon}
+                title="Access Control Settings"
               />
               <NavButton
                 to="/report-generation"

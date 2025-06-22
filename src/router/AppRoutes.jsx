@@ -37,7 +37,10 @@ import ViewUser from '../pages/AdminModule/ManageUser/viewUser';
 
 // UCUA Admin – Report Generation
 import ReportGen from '../pages/SafetyInsigh&ReportingModule/ReportGeneration/reportGen';
-import ReportExp from '../pages/SafetyInsigh&ReportingModule/ReportGeneration/reportExp';
+// import ReportExp from '../pages/SafetyInsigh&ReportingModule/ReportGeneration/reportExp';
+
+// UCUA Admin – Manage User Permissions
+import UserPermission from '../pages/AdminModule/ManageRolePermission/featureList';
 
 
 export default function AppRoutes() {
@@ -80,9 +83,12 @@ export default function AppRoutes() {
       <Route path="/user/edit/:id" element={<EditUser />} />
       <Route path="/user/view/:id" element={<ViewUser />} />
 
+      {/* UCUA Admin – Manage User Permissions */}
+      <Route path="/user-permission" element={<UserPermission />} />
+
       {/* UCUA Admin – Report Generation */}
       <Route path="/report-generation" element={<ReportGen />} />
-      <Route path="/report-export" element={<ReportExp />} />
+      {/* <Route path="/report-export" element={<ReportExp />} /> */}
 
     </Routes>
   );

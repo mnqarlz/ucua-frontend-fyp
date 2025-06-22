@@ -1,180 +1,354 @@
-// src/pages/AdminModule/ManageUser/viewUser.jsx
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  MenuItem,
-  Grid,
-  Paper,
-  Button,
-} from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
-
-const roles = ["Staff", "PSSD Officer", "UCUA Admin", "IT Admin"];
-const statuses = ["Active", "Inactive"];
+import React from 'react';
+import { User, Mail, Phone, Building, CreditCard, Lock, Users, Eye, ArrowLeft, Shield } from 'lucide-react';
 
 const ViewUser = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [notFound, setNotFound] = useState(false);
-  const [userData, setUserData] = useState(null);
-
-  const mockUser = {
-    U001: {
-      fullName: "Ahmad Zain",
-      email: "ahmadzain@example.com",
-      designation: "Staff",
-      department: "Safety",
-      password: "abc123",
-      role: "Staff",
-      phone: "0123456789",
-      staffId: "STF001",
-      status: "Active",
-    },
-    U002: {
-      fullName: "Fatimah Noor",
-      email: "fatimah@example.com",
-      designation: "PSSD Officer",
-      department: "PSSD",
-      password: "xyz456",
-      role: "PSSD Officer",
-      phone: "0198765432",
-      staffId: "STF002",
-      status: "Inactive",
-    },
+  // Dummy user data for display
+  const userData = {
+    fullName: "Im Nayeon",
+    email: "nayeon@pb.com",
+    designation: "Staff",
+    department: "Port Safety and Security Department (PSSD)",
+    password: "abc123",
+    phone: "0123456789",
+    staffId: "STF001",
+    status: "Active",
   };
 
-  useEffect(() => {
-    const user = mockUser[id];
-    if (user) {
-      setUserData(user);
-    } else {
-      setNotFound(true);
-    }
-  }, [id]);
+  const handleBack = () => {
+    // Navigate back to user list
+    console.log('Navigate back to user management');
+  };
 
-  if (notFound) {
-    return (
-      <Box sx={{ p: 3, fontFamily: "Poppins", color: "#061978" }}>
-        <Typography variant="h6">User record not found.</Typography>
-      </Box>
-    );
-  }
+  const getStatusColor = (status) => {
+    return status === 'Active' ? '#10b981' : '#ef4444';
+  };
 
   return (
-    <Box sx={{ p: 3, fontFamily: "Poppins" }}>
-      <Typography variant="h5" sx={{ color: "#061978", fontWeight: 600 }}>
-        View User Details
-      </Typography>
+    <div style={{ 
+      width: '100%',
+      height: '100vh',
+      backgroundColor: '#f5f5f5', 
+      fontFamily: 'Poppins, sans-serif',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      {/* Form Container */}
+      <div style={{ 
+        padding: '20px',
+        flex: '1',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <div style={{ 
+          backgroundColor: 'white', 
+          borderRadius: '8px', 
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          flex: '1',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          {/* Form Header */}
+          <div style={{ 
+            padding: '30px 40px', 
+            backgroundColor: '#061978',
+            color: 'white',
+            borderRadius: '8px 8px 0 0'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Eye size={28} style={{ marginRight: '15px' }} />
+              <div>
+                <h2 style={{ 
+                  fontSize: '24px', 
+                  fontWeight: '600',
+                  margin: '0 0 5px 0'
+                }}>
+                  View User Details
+                </h2>
+                <p style={{ 
+                  fontSize: '16px', 
+                  color: 'rgba(255,255,255,0.8)',
+                  margin: '0'
+                }}>
+                  User information and account details
+                </p>
+              </div>
+            </div>
+          </div>
 
-      <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Full Name"
-              value={userData?.fullName || ""}
-              fullWidth
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Email"
-              value={userData?.email || ""}
-              fullWidth
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Designation"
-              value={userData?.designation || ""}
-              select
-              fullWidth
-              InputProps={{ readOnly: true }}
-            >
-              {roles.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Department"
-              value={userData?.department || ""}
-              fullWidth
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Default Password"
-              value={userData?.password || ""}
-              fullWidth
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Access Level / Role"
-              value={userData?.role || ""}
-              select
-              fullWidth
-              InputProps={{ readOnly: true }}
-            >
-              {roles.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Phone Number"
-              value={userData?.phone || ""}
-              fullWidth
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Staff ID"
-              value={userData?.staffId || ""}
-              fullWidth
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              label="Account Status"
-              value={userData?.status || ""}
-              select
-              fullWidth
-              InputProps={{ readOnly: true }}
-            >
-              {statuses.map((s) => (
-                <MenuItem key={s} value={s}>
-                  {s}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12} textAlign="right">
-            <Button
-              variant="contained"
-              sx={{ fontFamily: "Poppins", backgroundColor: "#061978" }}
-              onClick={() => navigate("/user-management")}
-            >
-              Back to User List
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Box>
+          {/* Form Content */}
+          <div style={{ 
+            padding: '20px 30px',
+            flex: '1',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto'
+          }}>
+            <div style={{ 
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+              marginBottom: '20px'
+            }}>
+              {/* Full Name */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <User size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Full Name
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.fullName}
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <Mail size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Email Address
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.email}
+                </div>
+              </div>
+
+              {/* Designation */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <Users size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Designation
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.designation}
+                </div>
+              </div>
+
+              {/* Default Password */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <Lock size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Default Password
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.password}
+                </div>
+              </div>
+
+              {/* Department */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <Building size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Department
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.department}
+                </div>
+              </div>
+
+              {/* Staff ID */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <CreditCard size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Staff ID
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.staffId}
+                </div>
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <Phone size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Phone Number
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: '#000000',
+                  boxSizing: 'border-box'
+                }}>
+                  {userData.phone}
+                </div>
+              </div>
+
+              {/* Account Status */}
+              <div>
+                <label style={{ 
+                  display: 'block', 
+                  fontSize: '14px', 
+                  fontWeight: '500', 
+                  color: '#374151',
+                  marginBottom: '8px'
+                }}>
+                  <Shield size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Account Status
+                </label>
+                <div style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  backgroundColor: '#f9fafb',
+                  color: getStatusColor(userData.status),
+                  fontWeight: '600',
+                  boxSizing: 'border-box',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <div 
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      backgroundColor: getStatusColor(userData.status),
+                      marginRight: '8px'
+                    }}
+                  ></div>
+                  {userData.status}
+                </div>
+              </div>
+            </div>
+
+            {/* Back Button */}
+            <div style={{ 
+              marginTop: 'auto',
+              display: 'flex', 
+              justifyContent: 'flex-start', 
+              paddingTop: '20px',
+              borderTop: '1px solid #e5e5e5'
+            }}>
+              <button
+                type="button"
+                onClick={handleBack}
+                style={{
+                  padding: '12px 24px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  backgroundColor: '#061978',
+                  color: 'white',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#0a2499';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#061978';
+                }}
+              >
+                <ArrowLeft size={20} style={{ marginRight: '8px' }} />
+                Back to User List
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

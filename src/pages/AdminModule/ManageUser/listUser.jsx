@@ -1,148 +1,178 @@
-// src/pages/AdminModule/ManageUser/listUser.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  Box,
-  Typography,
-  Button,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TextField,
-  MenuItem,
-  IconButton,
-  Paper,
+  Box, Typography, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow, Paper,
+  TextField, InputAdornment, Select, MenuItem,
+  IconButton, Pagination, Tooltip, Button,
+  Dialog, DialogTitle, DialogContent,
+  DialogActions, Snackbar, Alert
 } from "@mui/material";
-import { Add, Edit, Delete, Visibility } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 
-const mockUsers = [
-  {
-    id: "U001",
-    name: "Ahmad Zain",
-    email: "ahmadzain@example.com",
-    designation: "Engineer",
-    department: "Safety",
-    role: "PSSD Officer",
-    status: "Active",
-  },
-  {
-    id: "U002",
-    name: "Fatimah Noor",
-    email: "fatimah.noor@example.com",
-    designation: "Admin Assistant",
-    department: "ICT",
-    role: "Staff",
-    status: "Inactive",
-  },
+const initialUsers = [
+  { id: "USR001", name: "MOHD HAZIQ RAMADHAN", email: "haziq@mail.com", role: "Staff", state: "Johor", district: "Muar" },
+  { id: "USR002", name: "SITI NORAINI", email: "noraini@mail.com", role: "PSSD Officer", state: "Johor", district: "Batu Pahat" },
+  { id: "USR003", name: "NUR ALIA", email: "alia@mail.com", role: "IT Admin", state: "Johor", district: "Kulai" },
+  { id: "USR004", name: "NUR ZULAIKHA", email: "eyka@mail.com", role: "UCUA Admin", state: "Johor", district: "Bandar Penawar" },
+  { id: "USR005", name: "NUR IZZAH", email: "izzah@mail.com", role: "UCUA Admin", state: "Johor", district: "Kota Tinggi" },
+  { id: "USR006", name: "NUR INSYIRAH", email: "syirah@mail.com", role: "Staff", state: "Johor", district: "Johor Bahru" },
 ];
 
 const ListUser = () => {
+  const [users, setUsers] = useState(initialUsers);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("ALL");
+  const [page, setPage] = useState(1);
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const rowsPerPage = 5;
   const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
-  const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    // Simulate fetching data
-    setUsers(mockUsers);
-  }, []);
-
-  const handleView = (id) => navigate(`/user/view/${id}`);
-  const handleEdit = (id) => navigate(`/user/edit/${id}`);
   const handleDelete = (id) => {
-    const confirm = window.confirm("Are you sure to delete this user?");
-    if (confirm) {
-      setUsers((prev) => prev.filter((user) => user.id !== id));
+    try {
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+      setSnackbar({ open: true, message: "User has been deleted.", severity: "success" });
+      console.log(`[LOG] User ${id} deleted at ${new Date().toLocaleString()} by Admin`);
+    } catch (err) {
+      setSnackbar({ open: true, message: "Unable to delete user. Please try again.", severity: "error" });
+    } finally {
+      setDeleteUserId(null);
     }
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(filter.toLowerCase()) ||
-      user.role.toLowerCase().includes(filter.toLowerCase()) ||
-      user.department.toLowerCase().includes(filter.toLowerCase())
+  const filtered = users.filter((user) =>
+    (filter === "ALL" || user.role === filter) &&
+    (user.name.toLowerCase().includes(search.toLowerCase()) ||
+      user.email.toLowerCase().includes(search.toLowerCase()) ||
+      user.id.toLowerCase().includes(search.toLowerCase()))
   );
 
+  const paginated = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
   return (
-    <Box sx={{ p: 3, fontFamily: "Poppins" }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h5"
-          sx={{ color: "#061978", fontWeight: 600, fontFamily: "Poppins" }}
-        >
-          User Management
-        </Typography>
+    <Box sx={{ p: 4, fontFamily: "Poppins, sans-serif" }}>
+      <Typography variant="h5" sx={{ fontWeight: 600, color: "#061978", mb: 2 }}>
+        LIST OF REGISTERED USERS
+      </Typography>
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2, flexWrap: "wrap", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <TextField
+            placeholder="Search by name, email or ID..."
+            variant="outlined"
+            size="small"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            sx={{ width: 300 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Select
+            size="small"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <MenuItem value="ALL">All Roles</MenuItem>
+            <MenuItem value="Staff">Staff</MenuItem>
+            <MenuItem value="PSSD Officer">PSSD Officer</MenuItem>
+            <MenuItem value="IT Admin">IT Admin</MenuItem>
+            <MenuItem value="UCUA Admin">UCUA Admin</MenuItem>
+          </Select>
+        </Box>
+
         <Button
           variant="contained"
-          startIcon={<Add />}
+          sx={{ backgroundColor: "#061978", fontWeight: 600 }}
+          startIcon={<AddIcon />}
           onClick={() => navigate("/user/add")}
-          sx={{
-            backgroundColor: "#061978",
-            fontFamily: "Poppins",
-            "&:hover": { backgroundColor: "#3a4bb3" },
-          }}
         >
           Add User
         </Button>
       </Box>
 
-      <TextField
-        fullWidth
-        label="Search by name, department, or role"
-        variant="outlined"
-        size="small"
-        sx={{ my: 2, fontFamily: "Poppins" }}
-        onChange={(e) => setFilter(e.target.value)}
-      />
-
-      <Paper elevation={3}>
+      <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
         <Table>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#061978" }}>
-              {["User ID", "Name", "Email", "Designation", "Department", "Role", "Status", "Action"].map(
-                (header) => (
-                  <TableCell key={header} sx={{ color: "white", fontWeight: "bold", fontFamily: "Poppins" }}>
-                    {header}
-                  </TableCell>
-                )
-              )}
+          <TableHead sx={{ backgroundColor: "#061978" }}>
+            <TableRow>
+              {["USER ID", "NAME", "EMAIL", "ROLE", "STATE", "DISTRICT", "ACTION"].map((header) => (
+                <TableCell key={header} sx={{ color: "white", fontWeight: 600 }}>{header}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={8} align="center" sx={{ fontFamily: "Poppins" }}>
-                  No users found.
+            {paginated.map((user, index) => (
+              <TableRow key={index}>
+                <TableCell>{user.id}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{user.state}</TableCell>
+                <TableCell>{user.district}</TableCell>
+                <TableCell>
+                  <Tooltip title="View User">
+                    <IconButton color="primary" onClick={() => navigate(`/user/view/${user.id}`)}>
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Edit User">
+                    <IconButton color="success" onClick={() => navigate(`/user/edit/${user.id}`)}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete User">
+                    <IconButton color="error" onClick={() => setDeleteUserId(user.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
-            ) : (
-              filteredUsers.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.designation}</TableCell>
-                  <TableCell>{user.department}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>{user.status}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleView(user.id)} title="View">
-                      <Visibility sx={{ color: "#061978" }} />
-                    </IconButton>
-                    <IconButton onClick={() => handleEdit(user.id)} title="Edit">
-                      <Edit sx={{ color: "#061978" }} />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(user.id)} title="Delete">
-                      <Delete sx={{ color: "#061978" }} />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))
+            ))}
+            {paginated.length === 0 && (
+              <TableRow><TableCell colSpan={7}>No users found.</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
-      </Paper>
+      </TableContainer>
+
+      <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+        <Pagination
+          count={Math.ceil(filtered.length / rowsPerPage)}
+          page={page}
+          onChange={(e, val) => setPage(val)}
+          color="primary"
+        />
+      </Box>
+
+      {/* Confirm Delete Dialog */}
+      <Dialog open={!!deleteUserId} onClose={() => setDeleteUserId(null)}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>Are you sure you want to delete this user?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteUserId(null)} color="primary">Cancel</Button>
+          <Button onClick={() => handleDelete(deleteUserId)} color="error">Delete</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
