@@ -29,6 +29,17 @@ import UCUATrends from '../pages/SafetyInsigh&ReportingModule/analyzetrends/ucua
 // UCUA Admin – View-Only Report List
 import UCUAAdminReportList from '../pages/UCUAReportingModule/adminViewAll';
 
+// UCUA Admin – Manage Users
+import ListUser from '../pages/AdminModule/ManageUser/listUser';
+import AddUser from '../pages/AdminModule/ManageUser/addUser';
+import EditUser from '../pages/AdminModule/ManageUser/editUser';
+import ViewUser from '../pages/AdminModule/ManageUser/viewUser';
+
+// UCUA Admin – Report Generation
+import ReportGen from '../pages/SafetyInsigh&ReportingModule/ReportGeneration/reportGen';
+import ReportExp from '../pages/SafetyInsigh&ReportingModule/ReportGeneration/reportExp';
+
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -62,6 +73,17 @@ export default function AppRoutes() {
 
       {/* UCUA Admin – View-Only */}
       <Route path="/ucua-admin-reports" element={<UCUAAdminReportList />} />
+
+      {/* UCUA Admin – User Management */}
+      <Route path="/user-management" element={<ListUser />} />
+      <Route path="/user/add" element={<AddUser />} />
+      <Route path="/user/edit/:id" element={<EditUser />} />
+      <Route path="/user/view/:id" element={<ViewUser />} />
+
+      {/* UCUA Admin – Report Generation */}
+      <Route path="/report-generation" element={<ReportGen />} />
+      <Route path="/report-export" element={<ReportExp />} />
+
     </Routes>
   );
 }

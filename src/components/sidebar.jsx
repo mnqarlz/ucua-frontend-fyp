@@ -314,23 +314,16 @@ const Sidebar = () => {
 
           {role === "ucuaadmin" && (
             <>
-              <SectionButton
-                icon={FolderIcon}
-                title="UCUA Report"
-                isOpen={openSections.ucuaReport}
-                onClick={() => handleToggle("ucuaReport")}
+              <NavButton
+                to="/user-management"
+                icon={GroupIcon}
+                title="Manage Users"
               />
-              <Collapse
-                in={openSections.ucuaReport}
-                timeout="auto"
-                unmountOnExit
-              >
-                <Box sx={{ pb: 1 }}>
-                  <StyledLink to="/ucua-admin-reports" label="All Report List" />
-                </Box>
-              </Collapse>
-
-              <NavButton to="/users" icon={GroupIcon} title="Manage Users" />
+              <NavButton
+                to="/report-generation"
+                icon={InsightsIcon}
+                title="Generate Report"
+              />
             </>
           )}
 
