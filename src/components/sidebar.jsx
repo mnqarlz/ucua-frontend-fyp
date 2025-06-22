@@ -274,9 +274,9 @@ const Sidebar = () => {
                 unmountOnExit
               >
                 <Box sx={{ pb: 1 }}>
-                  <StyledLink to="/reports" label="All Report List" />
-                  <StyledLink to="/reports/uc" label="UC Report List" />
-                  <StyledLink to="/reports/ua" label="UA Report List" />
+                  <StyledLink to="/all-reports" label="All Report List" />
+                  <StyledLink to="/uc-reports" label="UC Report List" />
+                  <StyledLink to="/ua-reports" label="UA Report List" />
                 </Box>
               </Collapse>
             </>
@@ -296,7 +296,7 @@ const Sidebar = () => {
                 unmountOnExit
               >
                 <Box sx={{ pb: 1 }}>
-                  <StyledLink to="/review/all" label="All Report List" />
+                  {/* <StyledLink to="/review/all" label="All Report List" /> */}
                   <StyledLink to="/review/uc" label="UC Report List" />
                   <StyledLink to="/review/ua" label="UA Report List" />
                 </Box>
