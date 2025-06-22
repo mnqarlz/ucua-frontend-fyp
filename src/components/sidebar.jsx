@@ -297,8 +297,10 @@ const Sidebar = () => {
               >
                 <Box sx={{ pb: 1 }}>
                   {/* <StyledLink to="/review/all" label="All Report List" /> */}
-                  <StyledLink to="/review/uc" label="UC Report List" />
-                  <StyledLink to="/review/ua" label="UA Report List" />
+                  <StyledLink to="/pssd-uc-list" label="UC Report List" />
+                  <StyledLink to="/pssd-ua-list" label="UA Report List" />
+                  {/* <StyledLink to="/pssd-view-uc/UA001" label="Sample View UC" />
+                  <StyledLink to="/pssd-view-ua/UA001" label="Sample View UA" /> */}
                 </Box>
               </Collapse>
 
