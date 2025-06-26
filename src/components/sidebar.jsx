@@ -18,6 +18,7 @@ import InsightsIcon from "@mui/icons-material/Insights";
 import SchoolIcon from "@mui/icons-material/School";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
+import MemoryIcon from "@mui/icons-material/Memory"; // For Model Management
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -31,6 +32,7 @@ const Sidebar = () => {
     ucuaForm: false,
     reportList: false,
     ucuaReport: false,
+    modelManagement: false, // Added for Model Management dropdown
   });
 
   const handleToggle = (section) => {
@@ -334,11 +336,25 @@ const Sidebar = () => {
           )}
 
           {role === "itadmin" && (
-            <NavButton
-              to="/training"
-              icon={SchoolIcon}
-              title="Train AI Models"
-            />
+            <>
+              <SectionButton
+                icon={MemoryIcon}
+                title="Model Management"
+                isOpen={openSections.modelManagement}
+                onClick={() => handleToggle("modelManagement")}
+              />
+              <Collapse
+                in={openSections.modelManagement}
+                timeout="auto"
+                unmountOnExit
+              >
+                <Box sx={{ pb: 1 }}>
+                  <StyledLink to="/train-ai-model" label="Train AI Model" />
+                  <StyledLink to="/update-ai-model" label="Update AI Model" />
+                  <StyledLink to="/external-dataset" label="External Dataset" />
+                </Box>
+              </Collapse>
+            </>
           )}
         </List>
       </Box>

@@ -42,6 +42,10 @@ import ReportGen from '../pages/SafetyInsigh&ReportingModule/ReportGeneration/re
 // UCUA Admin – Manage User Permissions
 import UserPermission from '../pages/AdminModule/ManageRolePermission/featureList';
 
+// IT Admin – Model Management Module
+import TrainAIModel from '../pages/AdminModule/AIModel/trainAI';
+import UpdateAIModel from '../pages/AdminModule/AIModel/updateAIModel';
+import ExternalDataset from '../pages/AdminModule/AIModel/externalData';
 
 export default function AppRoutes() {
   return (
@@ -89,6 +93,11 @@ export default function AppRoutes() {
       {/* UCUA Admin – Report Generation */}
       <Route path="/report-generation" element={<ReportGen />} />
       {/* <Route path="/report-export" element={<ReportExp />} /> */}
+
+      {/* IT Admin – Model Management */}
+      <Route path="/train-ai-model" element={<TrainAIModel />} />
+      <Route path="/update-ai-model" element={<UpdateAIModel />} />
+      <Route path="/external-dataset" element={<ExternalDataset />} />
 
     </Routes>
   );

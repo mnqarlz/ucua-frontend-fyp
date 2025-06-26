@@ -29,7 +29,7 @@ function App() {
       display: "flex",
       height: "100vh",
       width: "100vw",
-      overflow: "hidden",             // ✅ BLOCK horizontal scroll
+      overflow: "hidden",       
       boxSizing: "border-box"
     }}>
       {/* Sidebar */}
