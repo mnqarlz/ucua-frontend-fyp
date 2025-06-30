@@ -3,25 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
-  Container,
   TextField,
   Typography,
   Link,
   Paper,
   CssBaseline,
-  Avatar
+  Avatar,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  User,
+  Lock,
+  LogIn,
+  Eye,
+  EyeOff,
+  UserRoundPlus
+} from 'lucide-react';
 
+// ------------------------------------------------------------
+// Theme – Poppins + primary colour #061978
+// ------------------------------------------------------------
 const theme = createTheme({
-  typography: {
-    fontFamily: 'Poppins, sans-serif',
+  palette: {
+    primary: { main: '#061978' },
   },
+  typography: { fontFamily: 'Poppins, sans-serif' },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-      `,
+      styleOverrides: `@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');`,
     },
   },
 });
@@ -30,12 +41,12 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // 🔐 Dummy role logic (you can replace with real API later)
     let role = '';
     if (email === 'staff@jpb.com' && password === '123') role = 'staff';
     else if (email === 'pssd@jpb.com' && password === '123') role = 'pssd';
@@ -46,7 +57,6 @@ const Login = () => {
       return;
     }
 
-    // Save role and login state
     localStorage.setItem('userRole', role);
     localStorage.setItem('isLoggedIn', 'true');
     navigate('/dashboard');
@@ -55,112 +65,93 @@ const Login = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+
+      {/* Full‑width gradient background */}
       <Box
         sx={{
           minHeight: '100vh',
-          minWidth: '100vw',
-          width: '100vw',
-          height: '100vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #3B82F6 0%, #EC4899 100%)',
-          p: 0,
-          m: 0,
+          background: 'linear-gradient(135deg, #f3f6ff 0%, #e8efff 100%)',
+          p: { xs: 2, md: 110 },
         }}
       >
-        <Container
-          maxWidth={false}
-          disableGutters
-          sx={{
-            width: '100vw',
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            p: 0,
-          }}
-        >
-          <Paper
-            elevation={6}
-            sx={{
-              p: 4,
-              borderRadius: 0,
-              textAlign: 'center',
-              width: '100vw',
-              height: '100vh',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxSizing: 'border-box',
-              backgroundColor: 'rgba(255, 255, 255, 0.9)'
-            }}
-          >
-            {/* Logo added here */}
+        {/* Central column */}
+        <Box sx={{ width: '100%', maxWidth: 1000, mx: 'auto' }}>
+          {/* Header */}
+          <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Avatar
-              src="/logo.png" // Replace with your actual logo path
+              src="/logo.png"
               alt="UCUA Logo"
-              sx={{
-                width: 80,
-                height: 80,
-                mb: 2,
-                bgcolor: 'primary.main'
-              }}
+              sx={{ width: 90, height: 90, mx: 'auto', mb: 2, bgcolor: 'primary.main', color: 'white' }}
             >
               UCUA
             </Avatar>
-
-            <Typography
-              variant="h4"
-              component="h1"
-              sx={{
-                fontWeight: 600,
-                mb: 4,
-                color: '#333'
-              }}
-            >
-              UCUA Login
+            <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
+              Welcome Back
             </Typography>
+            <Typography variant="body1" sx={{ mt: 1, color: '#444' }}>
+              Sign in to your UCUA account
+            </Typography>
+          </Box>
 
+          {/* Slightly narrower card */}
+          <Paper elevation={6} sx={{ width: { xs: '100%', sm: 520, md: 620 }, mx: 'auto', p: { xs: 4, md: 5 }, borderRadius: 4 }}>
             {error && (
-              <Typography color="error" sx={{ mb: 2 }}>
+              <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
                 {error}
               </Typography>
             )}
 
-            <Box component="form" onSubmit={handleLogin} sx={{ width: '100%', maxWidth: 400 }}>
+            <Box component="form" onSubmit={handleLogin} noValidate>
+              <Typography sx={{ fontWeight: 500, mb: 0.5 }}>Email Address</Typography>
               <TextField
-                label="Email"
+                placeholder="Enter your email"
                 variant="outlined"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                sx={{ mb: 2 }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <User size={18} strokeWidth={1.8} />
+                    </InputAdornment>
+                  ),
+                }}
               />
 
+              <Typography sx={{ fontWeight: 500, mt: 2, mb: 0.5 }}>Password</Typography>
               <TextField
-                label="Password"
-                type="password"
+                placeholder="Enter your password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                sx={{ mb: 1 }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock size={18} strokeWidth={1.8} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end" size="small">
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
-              <Box sx={{ textAlign: 'right', mb: 3 }}>
-                <Link
-                  href="#"
-                  variant="body2"
-                  underline="hover"
-                  sx={{ color: '#666' }}
-                >
-                  Forgot Username / Password?
+              <Box sx={{ textAlign: 'right', mt: 1 }}>
+                <Link href="#" underline="hover" sx={{ color: 'primary.main', fontSize: 14 }}>
+                  Forgot your password?
                 </Link>
               </Box>
 
@@ -169,33 +160,21 @@ const Login = () => {
                 fullWidth
                 variant="contained"
                 size="large"
-                sx={{
-                  py: 1.5,
-                  mb: 3,
-                  fontWeight: 600,
-                  fontSize: '1rem',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #5a6fd1 0%, #6a4099 100%)'
-                  }
-                }}
+                startIcon={<LogIn size={18} />}
+                sx={{ mt: 3, fontWeight: 600, py: 1.4, borderRadius: 2 }}
               >
-                LOGIN
+                Sign In
               </Button>
 
-              <Typography variant="body2" sx={{ color: '#666' }}>
+              <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
                 Don't have an account?{' '}
-                <Link
-                  href="#"
-                  underline="hover"
-                  sx={{ fontWeight: 600, color: '#764ba2' }}
-                >
-                  Create your Account
+                <Link href="#" underline="hover" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                  <UserRoundPlus size={14} style={{ marginBottom: -2 }} /> Create Account
                 </Link>
               </Typography>
             </Box>
           </Paper>
-        </Container>
+        </Box>
       </Box>
     </ThemeProvider>
   );
