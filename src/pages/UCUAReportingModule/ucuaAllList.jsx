@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import {
-  Box, Typography, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Paper,
-  TextField, InputAdornment, Select, MenuItem,
-  IconButton, Pagination, Tooltip
+  Box,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  InputAdornment,
+  Select,
+  MenuItem,
+  IconButton,
+  Pagination,
+  Tooltip,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -12,14 +24,70 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
 
 const combinedReports = [
-  { no: "UC001", date: "03-01-2024 13:00:00", name: "MUHAMMAD AIMAN HAIQAL", location: "ICT DEPARTMENT", status: "PENDING", type: "UC" },
-  { no: "UC002", date: "05-01-2024 10:15:00", name: "NUR ALIA YUSOFF", location: "WAREHOUSE", status: "APPROVED", type: "UC" },
-  { no: "UC003", date: "06-01-2024 08:45:00", name: "MOHD HAZIQ", location: "FACTORY FLOOR", status: "REJECTED", type: "UC" },
-  { no: "UC004", date: "08-01-2024 09:30:00", name: "SITI NORAINI", location: "EQUIPMENT STORAGE", status: "NEED FEEDBACK", type: "UC" },
-  { no: "UA001", date: "04-01-2024 15:20:00", name: "MOHD HAZIQ", location: "MAINTENANCE AREA", status: "PENDING", type: "UA" },
-  { no: "UA002", date: "06-01-2024 09:00:00", name: "SITI NORAINI", location: "LOADING DOCK", status: "APPROVED", type: "UA" },
-  { no: "UA003", date: "07-01-2024 11:45:00", name: "NUR ALIA YUSOFF", location: "WAREHOUSE", status: "REJECTED", type: "UA" },
-  { no: "UA004", date: "08-01-2024 10:10:00", name: "MUHAMMAD AIMAN HAIQAL", location: "ICT DEPARTMENT", status: "PENDING", type: "UA" },
+  {
+    no: "UC001",
+    date: "03-01-2024 13:00:00",
+    name: "MUHAMMAD AIMAN HAIQAL",
+    location: "ICT DEPARTMENT",
+    status: "PENDING",
+    type: "UC",
+  },
+  {
+    no: "UC002",
+    date: "05-01-2024 10:15:00",
+    name: "NUR ALIA YUSOFF",
+    location: "WAREHOUSE",
+    status: "APPROVED",
+    type: "UC",
+  },
+  {
+    no: "UC003",
+    date: "06-01-2024 08:45:00",
+    name: "MOHD HAZIQ",
+    location: "FACTORY FLOOR",
+    status: "REJECTED",
+    type: "UC",
+  },
+  {
+    no: "UC004",
+    date: "08-01-2024 09:30:00",
+    name: "SITI NORAINI",
+    location: "EQUIPMENT STORAGE",
+    status: "NEED FEEDBACK",
+    type: "UC",
+  },
+  {
+    no: "UA001",
+    date: "04-01-2024 15:20:00",
+    name: "MOHD HAZIQ",
+    location: "MAINTENANCE AREA",
+    status: "PENDING",
+    type: "UA",
+  },
+  {
+    no: "UA002",
+    date: "06-01-2024 09:00:00",
+    name: "SITI NORAINI",
+    location: "LOADING DOCK",
+    status: "APPROVED",
+    type: "UA",
+  },
+  {
+    no: "UA003",
+    date: "07-01-2024 11:45:00",
+    name: "NUR ALIA YUSOFF",
+    location: "WAREHOUSE",
+    status: "REJECTED",
+    type: "UA",
+  },
+  {
+    no: "UA004",
+    date: "08-01-2024 10:10:00",
+    name: "MUHAMMAD AIMAN HAIQAL",
+    location: "ICT DEPARTMENT",
+    status: "PENDING",
+    type: "UA",
+  },
 ];
 
 const ucuaAllList = () => {
@@ -29,16 +97,24 @@ const ucuaAllList = () => {
   const navigate = useNavigate();
   const rowsPerPage = 5;
 
-  const filtered = combinedReports.filter((row) =>
-    (filter === "ALL" || row.status === filter) &&
-    (row.no.toLowerCase().includes(search.toLowerCase()) || row.name.toLowerCase().includes(search.toLowerCase()))
+  const filtered = combinedReports.filter(
+    (row) =>
+      (filter === "ALL" || row.status === filter) &&
+      (row.no.toLowerCase().includes(search.toLowerCase()) ||
+        row.name.toLowerCase().includes(search.toLowerCase()))
   );
 
-  const paginated = filtered.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const paginated = filtered.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
 
   return (
     <Box sx={{ p: 4, fontFamily: "Poppins, sans-serif" }}>
-      <Typography variant="h5" sx={{ fontWeight: 600, color: "#061978", mb: 2 }}>
+      <Typography
+        variant="h5"
+        sx={{ fontWeight: 600, color: "#061978", mb: 2 }}
+      >
         LIST OF ALL SUBMITTED REPORTS
       </Typography>
 
@@ -75,8 +151,21 @@ const ucuaAllList = () => {
         <Table>
           <TableHead sx={{ backgroundColor: "#061978" }}>
             <TableRow>
-              {["NO", "TYPE", "REPORT DATE", "OBSERVER NAME", "LOCATION", "STATUS", "ACTION"].map((header) => (
-                <TableCell key={header} sx={{ color: "white", fontWeight: 600 }}>{header}</TableCell>
+              {[
+                "NO",
+                "TYPE",
+                "REPORT DATE",
+                "OBSERVER NAME",
+                "LOCATION",
+                "STATUS",
+                "ACTION",
+              ].map((header) => (
+                <TableCell
+                  key={header}
+                  sx={{ color: "white", fontWeight: 600 }}
+                >
+                  {header}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -89,17 +178,23 @@ const ucuaAllList = () => {
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.location}</TableCell>
                 <TableCell>
-                  <Box sx={{
-                    px: 1.5, py: 0.5,
-                    bgcolor:
-                      row.status === "PENDING" ? "#fff59d"
-                        : row.status === "APPROVED" ? "#c8e6c9"
-                          : row.status === "REJECTED" ? "#ffcdd2"
-                            : "#b2ebf2",
-                    borderRadius: 2,
-                    display: "inline-block",
-                    fontWeight: 600
-                  }}>
+                  <Box
+                    sx={{
+                      px: 1.5,
+                      py: 0.5,
+                      bgcolor:
+                        row.status === "PENDING"
+                          ? "#fff59d"
+                          : row.status === "APPROVED"
+                          ? "#c8e6c9"
+                          : row.status === "REJECTED"
+                          ? "#ffcdd2"
+                          : "#b2ebf2",
+                      borderRadius: 2,
+                      display: "inline-block",
+                      fontWeight: 600,
+                    }}
+                  >
                     {row.status}
                   </Box>
                 </TableCell>
@@ -124,8 +219,11 @@ const ucuaAllList = () => {
                     </IconButton>
                   </Tooltip>
                   {row.type === "UC" && row.status === "NEED FEEDBACK" && (
-                    <Tooltip title="Edit Report">
-                      <IconButton sx={{ color: "#f59e0b" }}>
+                    <Tooltip title="Send Feedback">
+                      <IconButton
+                        sx={{ color: "#f59e0b" }}
+                        onClick={() => navigate(`/view-uc/${row.no}`)}
+                      >
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
